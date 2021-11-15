@@ -91,8 +91,8 @@ def savings_return_int(savings_account, years):
     savings_account = round((interest + savings_account), 2)
     return savings_account
 
-# this formuala is not my own and was located at: https://gist.github.com/jiaaro/6780635
 def retirement_calculator(yearly_contribution, years, four_one_k, avg_annual_return = 1.07):
+    # this formuala is not my own and was located at: https://gist.github.com/jiaaro/6780635
     total_four_one_k = four_one_k * (avg_annual_return ** years)
     while years > 0:
         years -= 1
@@ -210,7 +210,13 @@ def time_alive_print(alive_figures_dict, total_years_alive, remaining_figures_di
     print(Fore.YELLOW + f"{remaining_figures_dict['seconds2_key']} seconds!")
     print(Fore.WHITE + f"\nMake every one of your {remaining_figures_dict['seconds2_key']} seconds count! \U0001F609 \U0001F609")
 
-def print_current_portfolio(current_portfolio_string, four_one_k_string, four_one_k, current_portfolio, savings_account_string, savings_account, home_value_string, home_value, miscellaneous_string, miscellaneous):
+def print_current_portfolio(four_one_k, savings_account, home_value, miscellaneous):
+    current_portfolio = round((four_one_k + savings_account + home_value + miscellaneous), 2)
+    current_portfolio_string = ("{:,}".format(current_portfolio))
+    four_one_k_string = ("{:,}".format(four_one_k))
+    savings_account_string = ("{:,}".format(savings_account))
+    home_value_string = ("{:,}".format(home_value))
+    miscellaneous_string = ("{:,}".format(miscellaneous))
     print(Fore.YELLOW + f"Your current portfolio is valued at ${current_portfolio_string} and is comprised of:")
     print(Fore.WHITE + f'''
 ${four_one_k_string} in 401k ({round((four_one_k / current_portfolio) * 100, 2)} % of current portfolio)
@@ -218,7 +224,18 @@ ${savings_account_string} in savings ({round((savings_account / current_portfoli
 ${home_value_string} in home value ({round((home_value / current_portfolio) * 100, 2)} % of current portfolio)
 ${miscellaneous_string} in miscellaneous investments ({round((miscellaneous / current_portfolio) * 100, 2)} % of current portfolio)
 ''')
-def print_future_portfolio(years, four_one_K_future, four_one_k_future_int, total_future_portfolio, savings_return_future, savings_return_future_int, home_return_future, home_return_future_int, misc_return_future, misc_return_future_int):
+def print_future_portfolio(savings_account, years, miscellaneous, misc_interest, home_value, yearly_contribution, four_one_k):
+    savings_return_future = savings_return(savings_account, years)
+    misc_return_future = misc_return(miscellaneous, misc_interest, years)
+    home_return_future = home_return(home_value, years)
+    four_one_k_future = retirement_calculator(yearly_contribution, years, four_one_k)
+    savings_return_future_int = savings_return_int(savings_account, years)
+    misc_return_future_int = misc_return_int(miscellaneous, misc_interest, years)
+    home_return_future_int = home_return_int(home_value, years)
+    four_one_k_future_int = retirement_calculator_int(yearly_contribution, years, four_one_k)
+    total_future_portfolio = round((savings_return_future_int + misc_return_future_int + home_return_future_int + four_one_k_future_int), 2)
+    total_future_portfolio_str = str(total_future_portfolio)
+    total_future_portfolio_str = ("{:,}".format(total_future_portfolio))
     print(Fore.YELLOW + f"Your expected future portfolio (in {years} years from now) is valued at ${total_future_portfolio_str} and is comprised of:")
     print(Fore.WHITE + f'''
 ${four_one_k_future} in 401k ({round((four_one_k_future_int / total_future_portfolio) * 100, 2)} % of future portfolio)
@@ -267,7 +284,6 @@ Please enter a number to access a function or 'exit' to exit the application:
                     days_list.append(what_day)
                     event = (input("\nDescribe event:\n> "))
                     calendar_days[what_month][str(what_day)] = event
-                    #list_of_months.append(calendar_days[what_month])
                     add_another_event = input('\nWould you like to add another event?\n> ')
                     if add_another_event == 'yes':
                         continue
@@ -335,15 +351,7 @@ Please enter a number to access a function or 'exit' to exit the application:
             mortgage = int(input("Enter current amount owed on mortgage or 0 if you own home outright:\n> "))
             home_value = home_worth - mortgage
             miscellaneous = int(input("Enter amount of miscellaneous investments (cryptocurrency, for example):\n> "))
-            current_portfolio = round((four_one_k + savings_account + home_value + miscellaneous), 2)
-            current_portfolio_string = ("{:,}".format(current_portfolio))
-            four_one_k_string = ("{:,}".format(four_one_k))
-            savings_account_string = ("{:,}".format(savings_account))
-            home_value_string = ("{:,}".format(home_value))
-            miscellaneous_string = ("{:,}".format(miscellaneous))
-
-            # print current portfolio ---------------------------------------
-            print_current_portfolio(current_portfolio_string, four_one_k_string, four_one_k, current_portfolio, savings_account_string, savings_account, home_value_string, home_value, miscellaneous_string, miscellaneous)
+            print_current_portfolio(four_one_k, savings_account, home_value, miscellaneous)
 
             # future portfolio input ----------------------------------------
             print(Fore.YELLOW + '\nNow a few more questions to determine the potential future value of your portfolio')
@@ -356,20 +364,7 @@ Please enter a number to access a function or 'exit' to exit the application:
             misc_interest = input("Anticipated % return on misc investments (others based on national averages):\n> ")
             if misc_interest == '':
                 misc_interest = 0
-            savings_return_future = savings_return(savings_account, years)
-            misc_return_future = misc_return(miscellaneous, misc_interest, years)
-            home_return_future = home_return(home_value, years)
-            four_one_k_future = retirement_calculator(yearly_contribution, years, four_one_k)
-            savings_return_future_int = savings_return_int(savings_account, years)
-            misc_return_future_int = misc_return_int(miscellaneous, misc_interest, years)
-            home_return_future_int = home_return_int(home_value, years)
-            four_one_k_future_int = retirement_calculator_int(yearly_contribution, years, four_one_k)
-            total_future_portfolio = round((savings_return_future_int + misc_return_future_int + home_return_future_int + four_one_k_future_int), 2)
-            total_future_portfolio_str = str(total_future_portfolio)
-            total_future_portfolio_str = ("{:,}".format(total_future_portfolio))
-
-            # print future portfolio------------------------------------------
-            print_future_portfolio(years, four_one_k_future, four_one_k_future_int, total_future_portfolio, savings_return_future, savings_return_future_int, home_return_future, home_return_future_int, misc_return_future, misc_return_future_int)
+            print_future_portfolio(savings_account, years, miscellaneous, misc_interest, home_value, yearly_contribution, four_one_k)
             
             try_again4 = input(Fore.WHITE + '\nWould you like to try again, yes or no?\n> ')
 
