@@ -4,6 +4,8 @@ from datetime import date
 import moment
 import time
 import calendar
+from calendar_variables import calendar_days
+from calendar_variables import holiday_dict
 
 def lifespan_main(year, month, day):
     now = moment.now().format("YYYY-M-D")
@@ -52,21 +54,6 @@ def holiday_calculator(holiday):
     for number in now:
         number = int(number)
         int_list.append(number)
-
-    holiday_dict = {
-    'Christmas': [2021, 12, 25],
-    'Independence Day': [2022, 7, 4],
-    'New Years Eve': [2021, 12, 31],
-    'Thanksgiving': [2021, 11, 25],
-    'Easter': [2022, 4, 17],
-    'Mothers Day': [2022, 5, 8], 
-    'Halloween': [2022, 10, 31],
-    'Fathers Day': [2022, 6, 19], 
-    'Memorial Day': [2022, 5, 30],
-    'Mlk Day': [2022, 1, 17],
-    'Labor Day': [2022, 9, 5],
-    'Veterans Day': [2022, 11, 11]}
-    
     date_chosen = holiday_dict[holiday]
     current_date = date(int_list[0], int_list[1], int_list[2])
     holiday_date = date(date_chosen[0], date_chosen[1], date_chosen[2])
@@ -77,6 +64,22 @@ def weight_loss_caclcuator(current_weight, goal_weight, total_months):
     total_weight_loss = current_weight - goal_weight
     loss_per_month = total_weight_loss / total_months
     return loss_per_month
+
+def weight_loss_print(total_months, loss_per_month):
+    print(f'''
+You will need to lose the following amount of weight to reach your goal weight in {total_months} months:
+~{round(loss_per_month, 2)} lbs per month
+~{round(loss_per_month/30, 2)} lbs per day
+~{round(loss_per_month/730, 2)} lbs per hour
+''')
+
+def new_weight_loss_print(new_total_months, loss_per_month):
+    print(Fore.GREEN + f'''
+You will need to lose the following amount of weight to reach your goal weight in {new_total_months} months:
+~{round(loss_per_month, 2)} lbs per month
+~{round(loss_per_month/30, 2)} lbs per day
+~{round(loss_per_month/730, 2)} lbs per hour
+''')            
 
 def savings_return(savings_account, years):
     interest = savings_account * years * .006
@@ -136,6 +139,94 @@ def what_month_finder(what_month):
     int_value = string_to_integer[what_month]
     return int_value
 
+def calendar_printer(what_year, multiple_months, calendar_days, days_list, what_day):
+    string_to_integer = {"January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6, "July": 7, "August": 8, "September": 9, "October": 10, "November": 11, "December": 12}
+    print(f"\n{what_year} calendar:")
+    time.sleep(1)
+    x = 1
+    for months in multiple_months:
+        string_to_integer = what_month_finder(months)
+        print('\n')
+        print(calendar.month(what_year, string_to_integer, w=0, l=0))
+        print(Fore.YELLOW + f'List of events for {months}:')
+        print(Fore.WHITE + '---------------------------------------')
+        for x in range(1, 32):
+            if calendar_days[months][str(x)] != " ":
+                if x in days_list:
+                    what_day = x
+                print(Fore.WHITE + f'{what_day}.) {calendar_days[months][str(x)]}')
+                x =+ 1
+
+def month_calendar_printer(what_year, list_of_months, calendar_days, days_list, what_day):
+    string_to_integer = {"January": 1, "February": 2, "March": 3, "April": 4, "May": 5, "June": 6, "July": 7, "August": 8, "September": 9, "October": 10, "November": 11, "December": 12}
+    print(f"\nYou made the following updates to your {what_year} calendar:")
+    time.sleep(1)
+    x = 1
+    for months in list_of_months:
+        string_to_integer = what_month_finder(months)
+        print('\n')
+        print(calendar.month(what_year, string_to_integer, w=0, l=0))
+        print(Fore.YELLOW + f'List of events for {months}:')
+        print(Fore.WHITE + '---------------------------------------')
+        for x in range(1, 32):
+            if calendar_days[months][str(x)] != " ":
+                if x in days_list:
+                    what_day = x
+                print(Fore.WHITE + f'{what_day}.) {calendar_days[months][str(x)]}')
+                x =+ 1
+
+
+def time_alive_print(alive_figures_dict, total_years_alive, remaining_figures_dict):
+    print('\nYou have been alive for:')
+    time.sleep(2)
+    print(Fore.RED + f"\n{alive_figures_dict['years_key']} years! (you probably know that already)")
+    time.sleep(2)
+    print(Fore.YELLOW + f"{alive_figures_dict['months_key']} months!")
+    time.sleep(2)
+    print(Fore.RED + f"{alive_figures_dict['days_key']} days!") 
+    time.sleep(2)
+    print(Fore.YELLOW + f"{alive_figures_dict['hours_key']} hours!")
+    time.sleep(2)
+    print(Fore.RED + f"{alive_figures_dict['minutes_key']} minutes!") 
+    time.sleep(2)
+    print(Fore.YELLOW + f"{alive_figures_dict['seconds_key']} seconds!")
+    time.sleep(3)
+    percentage = round((total_years_alive / 79)*100, 2)
+    print(Fore.WHITE + f'''
+--The average lifepsan in the USA is 79 years--
+--Compared to the AVERAGE, you have lived {percentage} % of your life-- 
+--And your average remaining lifespan is:''')
+    time.sleep(7)
+    print(Fore.RED + f"\n{remaining_figures_dict['years2_key']} years!")
+    time.sleep(2)
+    print(Fore.YELLOW + f"{remaining_figures_dict['months2_key']} months!")
+    time.sleep(2)
+    print(Fore.RED + f"{remaining_figures_dict['days2_key']} days!") 
+    time.sleep(2)
+    print(Fore.YELLOW + f"{remaining_figures_dict['hours2_key']} hours!")
+    time.sleep(2)
+    print(Fore.RED + f"{remaining_figures_dict['minutes2_key']} minutes!") 
+    time.sleep(2)
+    print(Fore.YELLOW + f"{remaining_figures_dict['seconds2_key']} seconds!")
+    print(Fore.WHITE + f"\nMake every one of your {remaining_figures_dict['seconds2_key']} seconds count! \U0001F609 \U0001F609")
+
+def print_current_portfolio(current_portfolio_string, four_one_k_string, four_one_k, current_portfolio, savings_account_string, savings_account, home_value_string, home_value, miscellaneous_string, miscellaneous):
+    print(Fore.YELLOW + f"Your current portfolio is valued at ${current_portfolio_string} and is comprised of:")
+    print(Fore.WHITE + f'''
+${four_one_k_string} in 401k ({round((four_one_k / current_portfolio) * 100, 2)} % of current portfolio)
+${savings_account_string} in savings ({round((savings_account / current_portfolio) * 100, 2)} % of current portfolio)
+${home_value_string} in home value ({round((home_value / current_portfolio) * 100, 2)} % of current portfolio)
+${miscellaneous_string} in miscellaneous investments ({round((miscellaneous / current_portfolio) * 100, 2)} % of current portfolio)
+''')
+def print_future_portfolio(years, four_one_K_future, four_one_k_future_int, total_future_portfolio, savings_return_future, savings_return_future_int, home_return_future, home_return_future_int, misc_return_future, misc_return_future_int):
+    print(Fore.YELLOW + f"Your expected future portfolio (in {years} years from now) is valued at ${total_future_portfolio_str} and is comprised of:")
+    print(Fore.WHITE + f'''
+${four_one_k_future} in 401k ({round((four_one_k_future_int / total_future_portfolio) * 100, 2)} % of future portfolio)
+${savings_return_future} in savings ({round((savings_return_future_int / total_future_portfolio) * 100, 2)} % of future portfolio)
+${home_return_future} in home value ({round((home_return_future_int / total_future_portfolio) * 100, 2)} % of future portfolio)
+${misc_return_future } in miscellaneous investments ({round((misc_return_future_int / total_future_portfolio) * 100, 2)} % of future portfolio)
+''')
+
 user_entry = ''
 
 while user_entry != '8':
@@ -159,393 +250,7 @@ Please enter a number to access a function or 'exit' to exit the application:
     if user_entry == '1':
         try_again1 = 'yes'
         while try_again1 == 'yes':
-            calendar_days = {
-            "January": {
-                "1": " ",
-                "2": " ",
-                "3": " ",
-                "4": " ",
-                "5": " ",
-                "6": " ",
-                "7": " ",
-                "8": " ",
-                "9": " ",
-                "10": " ",
-                "11": " ",
-                "12": " ",
-                "13": " ",
-                "14": " ",
-                "15": " ",
-                "16": " ",
-                "17": " ",
-                "18": " ",
-                "19": " ",
-                "20": " ",
-                "21": " ",
-                "22": " ",
-                "23": " ",
-                "24": " ",
-                "25": " ",
-                "26": " ",
-                "27": " ",
-                "28": " ",
-                "29": " ",
-                "30": " ",
-                "31": " "
-            }, "February": {
-                "1": " ",
-                "2": " ",
-                "3": " ",
-                "4": " ",
-                "5": " ",
-                "6": " ",
-                "7": " ",
-                "8": " ",
-                "9": " ",
-                "10": " ",
-                "11": " ",
-                "12": " ",
-                "13": " ",
-                "14": " ",
-                "15": " ",
-                "16": " ",
-                "17": " ",
-                "18": " ",
-                "19": " ",
-                "20": " ",
-                "21": " ",
-                "22": " ",
-                "23": " ",
-                "24": " ",
-                "25": " ",
-                "26": " ",
-                "27": " ",
-                "28": " ",
-                "29": " ",
-                "30": " ",
-                "31": " "
-            }, "March": {
-                "1": " ",
-                "2": " ",
-                "3": " ",
-                "4": " ",
-                "5": " ",
-                "6": " ",
-                "7": " ",
-                "8": " ",
-                "9": " ",
-                "10": " ",
-                "11": " ",
-                "12": " ",
-                "13": " ",
-                "14": " ",
-                "15": " ",
-                "16": " ",
-                "17": " ",
-                "18": " ",
-                "19": " ",
-                "20": " ",
-                "21": " ",
-                "22": " ",
-                "23": " ",
-                "24": " ",
-                "25": " ",
-                "26": " ",
-                "27": " ",
-                "28": " ",
-                "29": " ",
-                "30": " ",
-                "31": " "
-            }, "April": {
-                "1": " ",
-                "2": " ",
-                "3": " ",
-                "4": " ",
-                "5": " ",
-                "6": " ",
-                "7": " ",
-                "8": " ",
-                "9": " ",
-                "10": " ",
-                "11": " ",
-                "12": " ",
-                "13": " ",
-                "14": " ",
-                "15": " ",
-                "16": " ",
-                "17": " ",
-                "18": " ",
-                "19": " ",
-                "20": " ",
-                "21": " ",
-                "22": " ",
-                "23": " ",
-                "24": " ",
-                "25": " ",
-                "26": " ",
-                "27": " ",
-                "28": " ",
-                "29": " ",
-                "30": " ",
-                "31": " "
-            }, "May": {
-                "1": " ",
-                "2": " ",
-                "3": " ",
-                "4": " ",
-                "5": " ",
-                "6": " ",
-                "7": " ",
-                "8": " ",
-                "9": " ",
-                "10": " ",
-                "11": " ",
-                "12": " ",
-                "13": " ",
-                "14": " ",
-                "15": " ",
-                "16": " ",
-                "17": " ",
-                "18": " ",
-                "19": " ",
-                "20": " ",
-                "21": " ",
-                "22": " ",
-                "23": " ",
-                "24": " ",
-                "25": " ",
-                "26": " ",
-                "27": " ",
-                "28": " ",
-                "29": " ",
-                "30": " ",
-                "31": " "
-            }, "June": {
-                "1": " ",
-                "2": " ",
-                "3": " ",
-                "4": " ",
-                "5": " ",
-                "6": " ",
-                "7": " ",
-                "8": " ",
-                "9": " ",
-                "10": " ",
-                "11": " ",
-                "12": " ",
-                "13": " ",
-                "14": " ",
-                "15": " ",
-                "16": " ",
-                "17": " ",
-                "18": " ",
-                "19": " ",
-                "20": " ",
-                "21": " ",
-                "22": " ",
-                "23": " ",
-                "24": " ",
-                "25": " ",
-                "26": " ",
-                "27": " ",
-                "28": " ",
-                "29": " ",
-                "30": " ",
-                "31": " "
-            }, "July": {
-                "1": " ",
-                "2": " ",
-                "3": " ",
-                "4": " ",
-                "5": " ",
-                "6": " ",
-                "7": " ",
-                "8": " ",
-                "9": " ",
-                "10": " ",
-                "11": " ",
-                "12": " ",
-                "13": " ",
-                "14": " ",
-                "15": " ",
-                "16": " ",
-                "17": " ",
-                "18": " ",
-                "19": " ",
-                "20": " ",
-                "21": " ",
-                "22": " ",
-                "23": " ",
-                "24": " ",
-                "25": " ",
-                "26": " ",
-                "27": " ",
-                "28": " ",
-                "29": " ",
-                "30": " ",
-                "31": " "
-            }, "August": {
-                "1": " ",
-                "2": " ",
-                "3": " ",
-                "4": " ",
-                "5": " ",
-                "6": " ",
-                "7": " ",
-                "8": " ",
-                "9": " ",
-                "10": " ",
-                "11": " ",
-                "12": " ",
-                "13": " ",
-                "14": " ",
-                "15": " ",
-                "16": " ",
-                "17": " ",
-                "18": " ",
-                "19": " ",
-                "20": " ",
-                "21": " ",
-                "22": " ",
-                "23": " ",
-                "24": " ",
-                "25": " ",
-                "26": " ",
-                "27": " ",
-                "28": " ",
-                "29": " ",
-                "30": " ",
-                "31": " "
-            }, "September": {
-                "1": " ",
-                "2": " ",
-                "3": " ",
-                "4": " ",
-                "5": " ",
-                "6": " ",
-                "7": " ",
-                "8": " ",
-                "9": " ",
-                "10": " ",
-                "11": " ",
-                "12": " ",
-                "13": " ",
-                "14": " ",
-                "15": " ",
-                "16": " ",
-                "17": " ",
-                "18": " ",
-                "19": " ",
-                "20": " ",
-                "21": " ",
-                "22": " ",
-                "23": " ",
-                "24": " ",
-                "25": " ",
-                "26": " ",
-                "27": " ",
-                "28": " ",
-                "29": " ",
-                "30": " ",
-                "31": " "
-            }, "October": {
-                "1": " ",
-                "2": " ",
-                "3": " ",
-                "4": " ",
-                "5": " ",
-                "6": " ",
-                "7": " ",
-                "8": " ",
-                "9": " ",
-                "10": " ",
-                "11": " ",
-                "12": " ",
-                "13": " ",
-                "14": " ",
-                "15": " ",
-                "16": " ",
-                "17": " ",
-                "18": " ",
-                "19": " ",
-                "20": " ",
-                "21": " ",
-                "22": " ",
-                "23": " ",
-                "24": " ",
-                "25": " ",
-                "26": " ",
-                "27": " ",
-                "28": " ",
-                "29": " ",
-                "30": " ",
-                "31": " "
-            } ,"November": {
-                "1": " ",
-                "2": " ",
-                "3": " ",
-                "4": " ",
-                "5": " ",
-                "6": " ",
-                "7": " ",
-                "8": " ",
-                "9": " ",
-                "10": " ",
-                "11": " ",
-                "12": " ",
-                "13": " ",
-                "14": " ",
-                "15": " ",
-                "16": " ",
-                "17": " ",
-                "18": " ",
-                "19": " ",
-                "20": " ",
-                "21": " ",
-                "22": " ",
-                "23": " ",
-                "24": " ",
-                "25": " ",
-                "26": " ",
-                "27": " ",
-                "28": " ",
-                "29": " ",
-                "30": " ",
-                "31": " "
-            }, "December": {
-                "1": " ",
-                "2": " ",
-                "3": " ",
-                "4": " ",
-                "5": " ",
-                "6": " ",
-                "7": " ",
-                "8": " ",
-                "9": " ",
-                "10": " ",
-                "11": " ",
-                "12": " ",
-                "13": " ",
-                "14": " ",
-                "15": " ",
-                "16": " ",
-                "17": " ",
-                "18": " ",
-                "19": " ",
-                "20": " ",
-                "21": " ",
-                "22": " ",
-                "23": " ",
-                "24": " ",
-                "25": " ",
-                "26": " ",
-                "27": " ",
-                "28": " ",
-                "29": " ",
-                "30": " ",
-                "31": " "
-            }}
-            #list_of_months = []
+            list_of_months = []
             multiple_months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
             days_list = []
             what_month = ''
@@ -557,8 +262,7 @@ Please enter a number to access a function or 'exit' to exit the application:
             if add_event == 'yes':
                 while add_event == 'yes':
                     what_month = (input("\nMonth?\n> ")).capitalize()
-                    #if what_month not in multiple_months:
-                        #multiple_months.append(what_month)
+                    list_of_months.append(what_month)
                     what_day = int(input("\nDay?\n> "))
                     days_list.append(what_day)
                     event = (input("\nDescribe event:\n> "))
@@ -569,27 +273,15 @@ Please enter a number to access a function or 'exit' to exit the application:
                         continue
                     else:
                         break
-          
-            print(f"\nYou made the following updates to your {what_year} calendar:")
-            time.sleep(1)
-            x = 1
-            for months in multiple_months:
-                string_to_integer = what_month_finder(months)
-                print('\n')
-                print(calendar.month(what_year, string_to_integer, w=0, l=0))
-                print(Fore.YELLOW + f'List of events for {months}:')
-                print(Fore.WHITE + '---------------------------------------')
-                for x in range(1, 32):
-                    if calendar_days[months][str(x)] != " ":
-                        if x in days_list:
-                            what_day = x
-                        print(Fore.WHITE + f'{what_day}.) {calendar_days[months][str(x)]}')
-                        x =+ 1
-    
+            month_or_year = input("\nEnter '1' to see calendar updates. Enter '2' to see full year calendar:\n> ")
+            if month_or_year == '1':
+                month_calendar_printer(what_year, list_of_months, calendar_days, days_list, what_day)
+            elif month_or_year == '2':
+                calendar_printer(what_year, multiple_months, calendar_days, days_list, what_day)
             try_again1 = 'no'
         
-    # user entry 2 -------------------------------------------------------------------------------------------------------------------
-    #---------------------------------------------------------------------------------------------------------------------------------
+# user entry 2 ----------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------------
     elif user_entry == '2':
         try_again2 = 'yes'
         holiday_list = ['Christmas','Halloween','Independence Day', 'New Years Eve', 'Thanksgiving','Easter','Mothers Day','Fathers Day','Memorial Day','Mlk Day','Labor Day','Veterans Day']
@@ -603,7 +295,7 @@ Please enter a number to access a function or 'exit' to exit the application:
             print(Fore.GREEN + f'\nThere are {number_of_days} days until {holiday}')
             try_again2 = input(Fore.WHITE + '\nWould you like to try again, yes or no?\n> ')
 
-    # user entry 3 ------------------------------------------------------------------------------------------------------------------
+    # user entry 3 -------------------------------------------------------------------------------------------------------------------
     #---------------------------------------------------------------------------------------------------------------------------------
     elif user_entry == '3':
         try_again3 = 'yes'
@@ -613,39 +305,28 @@ Please enter a number to access a function or 'exit' to exit the application:
             goal_weight = int(input("What is your goal weight?\n> "))
             total_months = int(input("Enter how many months you would like to reach your goal weight?\n> "))
             loss_per_month = weight_loss_caclcuator(current_weight, goal_weight, total_months)
-            print(f'''
-You will need to lose the following amount of weight to reach your goal weight in {total_months} months:
-~{round(loss_per_month, 2)} lbs per month
-~{round(loss_per_month/30, 2)} lbs per day
-~{round(loss_per_month/730, 2)} lbs per hour
-''')
+            weight_loss_print(total_months, loss_per_month)
+
             pos_neg = (input("Enter '+' to extend or '-' to reduce the time to reach your goal:\n> "))
             if pos_neg == '+':
                 new_total_months = total_months + int(input('How many months do you want to add?\n> '))
                 loss_per_month = weight_loss_caclcuator(current_weight, goal_weight, new_total_months)
-                print(Fore.GREEN + f'''
-You will need to lose the following amount of weight to reach your goal weight in {new_total_months} months:
-~{round(loss_per_month, 2)} lbs per month
-~{round(loss_per_month/30, 2)} lbs per day
-~{round(loss_per_month/730, 2)} lbs per hour
-''')            
+                new_weight_loss_print(new_total_months, loss_per_month)
+
             elif pos_neg == '-':
                 new_total_months = total_months - int(input('How many months do you want to remove?\n> '))
                 loss_per_month = weight_loss_caclcuator(current_weight, goal_weight, new_total_months)
-                print(Fore.GREEN + f'''
-You will need to lose the following amount of weight to reach your goal weight in {new_total_months} months:
-~{round(loss_per_month, 2)} lbs per month
-~{round(loss_per_month/30, 2)} lbs per day
-~{round(loss_per_month/730, 2)} lbs per hour
-''')            
+                new_weight_loss_print(new_total_months, loss_per_month)
+
             try_again3 = input('Would you like to try again, yes or no?\n> ')
 
   # user entry 4 ------------------------------------------------------------------------------------------------------------------
-  #---------------------------------------------------------------------------------------------------------------------------------
+  #--------------------------------------------------------------------------------------------------------------------------------
 
     elif user_entry == '4':
         try_again4 = 'yes'
         while try_again4 == 'yes':
+            # current portfolio input --------------------------------------
             print(Fore.WHITE + '\nWelcome to the Future Net Worth Calculator \U0001F4B0 \U0001F4B0 \U0001F4B0 \n')
             print(Fore.YELLOW + 'First we will ask some questions about your investments\n') 
             four_one_k = int(input(Fore.WHITE + "Enter current amount invested in 401K or 0 if none:\n> "))
@@ -660,14 +341,11 @@ You will need to lose the following amount of weight to reach your goal weight i
             savings_account_string = ("{:,}".format(savings_account))
             home_value_string = ("{:,}".format(home_value))
             miscellaneous_string = ("{:,}".format(miscellaneous))
-            # current portfolio ouput ---------------------------------------------------------------------------------
-            print(Fore.YELLOW + f"Your current portfolio is valued at ${current_portfolio_string} and is comprised of:")
-            print(Fore.WHITE + f'''
-${four_one_k_string} in 401k ({round((four_one_k / current_portfolio) * 100, 2)} % of current portfolio)
-${savings_account_string} in savings ({round((savings_account / current_portfolio) * 100, 2)} % of current portfolio)
-${home_value_string} in home value ({round((home_value / current_portfolio) * 100, 2)} % of current portfolio)
-${miscellaneous_string} in miscellaneous investments ({round((miscellaneous / current_portfolio) * 100, 2)} % of current portfolio)
-''')
+
+            # print current portfolio ---------------------------------------
+            print_current_portfolio(current_portfolio_string, four_one_k_string, four_one_k, current_portfolio, savings_account_string, savings_account, home_value_string, home_value, miscellaneous_string, miscellaneous)
+
+            # future portfolio input ----------------------------------------
             print(Fore.YELLOW + '\nNow a few more questions to determine the potential future value of your portfolio')
             current_age = int(input(Fore.WHITE + "Current age:\n> "))
             retirement_age = int(input("Retirement age:\n> "))
@@ -689,15 +367,12 @@ ${miscellaneous_string} in miscellaneous investments ({round((miscellaneous / cu
             total_future_portfolio = round((savings_return_future_int + misc_return_future_int + home_return_future_int + four_one_k_future_int), 2)
             total_future_portfolio_str = str(total_future_portfolio)
             total_future_portfolio_str = ("{:,}".format(total_future_portfolio))
-            # future portfolio ouput ------------------------------------------------------------------------------------
-            print(Fore.YELLOW + f"Your expected future portfolio (in {years} years from now) is valued at ${total_future_portfolio_str} and is comprised of:")
-            print(Fore.WHITE + f'''
-${four_one_k_future} in 401k ({round((four_one_k_future_int / total_future_portfolio) * 100, 2)} % of future portfolio)
-${savings_return_future} in savings ({round((savings_return_future_int / total_future_portfolio) * 100, 2)} % of future portfolio)
-${home_return_future} in home value ({round((home_return_future_int / total_future_portfolio) * 100, 2)} % of future portfolio)
-${misc_return_future } in miscellaneous investments ({round((misc_return_future_int / total_future_portfolio) * 100, 2)} % of future portfolio)
-''')
+
+            # print future portfolio------------------------------------------
+            print_future_portfolio(years, four_one_k_future, four_one_k_future_int, total_future_portfolio, savings_return_future, savings_return_future_int, home_return_future, home_return_future_int, misc_return_future, misc_return_future_int)
+            
             try_again4 = input(Fore.WHITE + '\nWould you like to try again, yes or no?\n> ')
+
     # user entry 5 ------------------------------------------------------------------------------------------------------------------
     #---------------------------------------------------------------------------------------------------------------------------------
     elif user_entry == '5':
@@ -712,39 +387,7 @@ ${misc_return_future } in miscellaneous investments ({round((misc_return_future_
             total_years_alive = int(round((days_alive / 365), 0))
             years_alive = alive_figures_dict['years_key']
             remaining_figures_dict = time_remaining_calc(total_years_alive, year, month, day)
-     # print statements ------------------------------------------------------------------   
-            print('\nYou have been alive for:')
-            time.sleep(2)
-            print(Fore.RED + f"\n{alive_figures_dict['years_key']} years! (you probably know that already)")
-            time.sleep(2)
-            print(Fore.YELLOW + f"{alive_figures_dict['months_key']} months!")
-            time.sleep(2)
-            print(Fore.RED + f"{alive_figures_dict['days_key']} days!") 
-            time.sleep(2)
-            print(Fore.YELLOW + f"{alive_figures_dict['hours_key']} hours!")
-            time.sleep(2)
-            print(Fore.RED + f"{alive_figures_dict['minutes_key']} minutes!") 
-            time.sleep(2)
-            print(Fore.YELLOW + f"{alive_figures_dict['seconds_key']} seconds!")
-            time.sleep(3)
-            percentage = round((total_years_alive / 79)*100, 2)
-            print(Fore.WHITE + f'''
- --The average lifepsan in the USA is 79 years--
- --Compared to the AVERAGE, you have lived {percentage} % of your life-- 
- --And your average remaining lifespan is:''')
-            time.sleep(7)
-            print(Fore.RED + f"\n{remaining_figures_dict['years2_key']} years!")
-            time.sleep(2)
-            print(Fore.YELLOW + f"{remaining_figures_dict['months2_key']} months!")
-            time.sleep(2)
-            print(Fore.RED + f"{remaining_figures_dict['days2_key']} days!") 
-            time.sleep(2)
-            print(Fore.YELLOW + f"{remaining_figures_dict['hours2_key']} hours!")
-            time.sleep(2)
-            print(Fore.RED + f"{remaining_figures_dict['minutes2_key']} minutes!") 
-            time.sleep(2)
-            print(Fore.YELLOW + f"{remaining_figures_dict['seconds2_key']} seconds!")
-            print(Fore.WHITE + f"\nMake every one of your {remaining_figures_dict['seconds2_key']} seconds count! \U0001F609 \U0001F609")
+            time_alive_print(alive_figures_dict, total_years_alive, remaining_figures_dict)
             try_again5 = input(Fore.WHITE + '\nWould you like to try again, yes or no?\n> ')
 
     # user entry 6 -------------------------------------------------------------------------------------------------------------------
